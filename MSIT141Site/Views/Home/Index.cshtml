@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles{ 
+    <style>
+        #boxTable {
+            border: solid 2px green;
+            text-align: center;
+            border-collapse: collapse;
+            padding: 2vw;
+        }
+            #boxTable th {
+                border: solid 2px green;
+            }
+        #boxTable td{
+            border:solid 2px green;
+        }
+    </style>
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <input type="button" value="OK" class="btn"  />
+    <div>
+        <table id="boxTable">
+            <tr>
+                <th>員工</th>
+                <th>工作經歷</th>
+                <th>月薪</th>
+            </tr>
+
+        </table>
+    </div>
+        
+    
+   
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+@section Scripts{ 
+    <script>
+
+        var emp = {
+            "employees": [
+                { "name": "Tom", "workYears": 3, "salary": 35000 },
+                { "name": "Jack", "workYears": 5, "salary": 40000 },
+                { "name": "Mary", "workYears": 7, "salary": 45000 }
+            ]
+        };
+        $(".btn").click(function () {
+            //For  Homework
+            for (let i = 0; i < emp.employees.length; i++){
+                console.log()
+                $("#boxTable").append(`<tr><td>${emp.employees[i].name}</td><td>${emp.employees[i].workYears}</td><td>${emp.employees[i].salary}</td></tr>`)
+            }
+
+
+            /* $(`.display-4`).text("hello Welcome MVC").css("background-color","green");*/
+
+
+            //for (let i = 0; i < emp.employees.length; i++) {
+            //    console.log(emp.employees[i].name);
+            //    console.log(emp.employees[i].workYears);
+            //    console.log(emp.employees[i].salary);
+            //}
+
+            //ES6
+            //emp.employees.forEach(employee => {
+            //    //解構賦值(Destructuring assignment)
+            //    const { name, workYears, salary } = employee;
+            //    console.log(name);
+            //    console.log(workYears);
+            //    console.log(salary);
+
+
+            //$.each(emp.employees, (index, employee) => {
+            //    const { name, workYears, salary } = employee;
+            //    console.log(name);
+            //    console.log(workYears);
+            //    console.log(salary);
+
+            //})
+
+        })
+
+        
+        
+        
+    </script>
+}
+
+
