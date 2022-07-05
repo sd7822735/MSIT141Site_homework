@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "AjaxPost";
+}
+
+<h1>AjaxPost</h1>
+
+<div>
+    <form name="userInfo" method="post" enctype="application/x-www-form-urlencoded" action="~/api/index">
+        <div class="form-group">
+            <label for="exampleInputEmail1">姓名</label>
+            <input type="text" name="name" class="form-control" id="inputName" aria-describedby="emailHelp">
+            <small id="showName" class="form-text text-muted"></small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">年齡</label>
+            <input type="number" name="age" class="form-control" id="inputAge" aria-describedby="emailHelp">
+
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">電子郵件</label>
+            <input type="email" name="email" class="form-control" id="inputEmail">
+        </div>
+
+        <button type="submit" class="btn btn-primary">送出</button>
+    </form>
+    <div class="alert alert-info" id="div1"></div>
+    <div class="col" -3></div>
+</div>
+
+@section Scripts{ 
+<script>
+    const btnSubmit = document.querySelector(".btn");
+    const txtName = document.querySelector("#inputName");
+    const txtAge = document.querySelector("#inputAge");
+    const txtEmail = document.querySelector("#inputEmail")
+    const divInfo = document.querySelector("#div1");
+
+    txtName.addEventListener("blur", (evt) => {
+        evt.preventDefault();
+    })
+    btnSubmit.addEventListener("click", (evt) => {
+        evt.preventDefault();
+        //step1
+        const xhr = new XMLHttpRequest;
+
+        //step3
+        xhr.addEventListener("load", () => {
+            const data = xhr.responseText;
+            divInfo.innerHTML=`<h3>${data}</h3>`
+        })
+
+        //step2
+        const params = `name=${txtName.value}&email=${txtEmail.value}&age=${txtAge.value}`
+        xhr.open("POST", "@Url.Content("~/api/index")");
+        xhr.setRequestHeader("content-type","application/x-www-form-urlencoded")
+        xhr.send(params);
+
+    })
+
+
+</script>
+}

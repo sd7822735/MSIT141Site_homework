@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewData["Title"] = "FirstAjax";
+}
+
+<h1>FirstAjax</h1>
+<div>
+    <input type="text" id="txtName" />
+</div>
+<div>
+    <input type="text" id="txtAge" />
+</div>
+
+<button type="button" id="btn_start" class="btn btn-primary m-3" >Start</button>
+<button type="button" id="btn_stop" class="btn btn-primary m-3">Stop</button>
+<div id="div1" class="alert alert-danger"></div> 
+
+
+@section Scripts{ 
+    <script>
+        const btnStart = document.querySelector("#btn_start");
+        const btnStop = document.querySelector("#btn_stop");
+        const divInfo = document.querySelector("#div1");
+        const txtName = document.querySelector("#txtName");
+        const txtAge = document.querySelector("#txtAge");
+
+        //1.建立Ajax物件
+        const ajax = new XMLHttpRequest;
+        btnStop.addEventListener("click", () => {
+            ajax.abort();
+        })
+
+        btnStart.addEventListener("click", () => {
+            //1.建立Ajax物件
+            const ajax = new XMLHttpRequest;
+
+
+
+            //3.在load事件中接收資料
+            //當伺服器回傳結果完成後會觸發load事件
+            ajax.addEventListener("load", () => {
+                //資料接收(因為回傳為字串用TEXT)
+                console.log("load");
+                const data = ajax.responseText;
+
+                //顯示資料
+                divInfo.innerHTML = `<h4>${data}</h4>`;
+            })
+            //開始
+            ajax.addEventListener("loadstart", () => {
+                console.log("loadstart");
+                btnStart.textContent = "loading......";
+                btnStart.setAttribute("disabled","disabled")
+            })
+            //結束
+            ajax.addEventListener("loadend", () => {
+                console.log("loadend");
+                btnStart.removeAttribute("disabled");
+                btnStart.textContent = "已完成";
+            })
+            //時間到
+            ajax.addEventListener("timeout", () => {
+                console.log("timeout");
+                divInfo.innerHTML = "<h3>伺服器忙碌中</h3>";
+            })
+            //終止
+            ajax.addEventListener("abort", () => {
+                console.log("abort");
+                divInfo.innerHTML = "<h3>您終止了城市的執行</h3>"
+            })
+
+             //2.對server端發出要求(Request)
+            const url = "@Url.Content("~/api/index")";
+            const params = `?name=${txtName.value}&age=${txtAge.value}`;
+            /*ajax.open("Get", `/api/index?name=${txtName.value}&age=${txtAge.value}`);*/  //開啟瀏覽器輸入網址
+            ajax.open("Get", url + params);
+            ajax.abort(3000);   //3s伺服器沒回應就終止程式執行
+            ajax.send();  //按下Enter鍵
+
+
+
+        })
+
+        //自己練習
+        var emp = {
+            "employees": [
+                { "name": "Tom", "workYears": 3, "salary": 35000 },
+                { "name": "Jack", "workYears": 5, "salary": 40000 },
+                { "name": "Mary", "workYears": 7, "salary": 45000 }
+            ]
+        };
+
+    </script>
+}
+

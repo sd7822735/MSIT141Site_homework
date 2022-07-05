@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<div>
+    <form name="userInfo" method="post" enctype="application/x-www-form-urlencoded" action="~/api/Register">
+        <div class="form-group">
+            <label for="inputName">姓名</label>
+            <input type="text" name="name" class="form-control" id="inputName" aria-describedby="emailHelp">
+            <small id="showName" class="form-text text-muted">填資料</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">年齡</label>
+            <input type="number" name="age" class="form-control" id="inputAge" aria-describedby="emailHelp">
+
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">電子郵件</label>
+            <input type="email" name="email" class="form-control" id="inputEmail">
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile" name="file">
+            <label class="custom-file-label" for="customFile">選擇檔案</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">送出</button>
+    </form>
+    <div class="alert alert-info" id="div1"></div>
+    <div class="col" -3></div>
+</div>
+
+@section Scripts{
+    <script>
+        const btnSubmit = document.querySelector(".btn");
+        const divInfo = document.querySelector("#div1");
+        const txtName = document.querySelector("#inputName");
+        const Show = document.querySelector("#showName")
+
+
+        //==============Homework確認名字是否有人用過===========
+        txtName.addEventListener("blur", (evt) => {
+
+            //step1
+            const xhr = new XMLHttpRequest;
+            const formData = new FormData(document.userInfo);
+            //step3
+            xhr.addEventListener("load", () => {
+                const data = xhr.responseText;
+                if (txtName.value.trim() === "") {
+                    //顯示錯誤訊息
+                    Show.innerHTML = "此欄為必填欄位!!";
+                } else {
+                    //Ajax
+                    if (data == "True") {
+                        Show.innerHTML = "此姓名已有人使用";
+                    }
+                    else {
+                        Show.innerHTML = "可以使用"
+                    }
+                }
+            })
+            //strp2
+            xhr.open("Post", "@Url.Content("~/Api/CheckName")");
+            xhr.send(formData);
+            console.log(formData);
+        })
+
+
+        btnSubmit.addEventListener("click", (evt) => {
+
+        evt.preventDefault(); //停止預設行為 submit link
+        const formData = new FormData(document.userInfo);
+         //step1
+        //透過 fetch() 上傳圖檔
+        fetch('@Url.Content("~/api/register")', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => divInfo.innerHTML = data);
+
+
+
+
+        ////透過XMLHttpRequest 上傳檔案
+        ////step1
+        //const formData = new FormData(document.userInfo);
+        //const xhr = new XMLHttpRequest;
+        ////step3
+        //xhr.addEventListener("load", () => {
+        //    const data = xhr.responseText;
+        //    divInfo.innerHTML=`<h3>${data}</h3>`
+        //})
+        ////step2
+        //xhr.open("POST", document.userInfo.action);
+        //xhr.send(formData);
+    })
+
+
+    </script>
+}

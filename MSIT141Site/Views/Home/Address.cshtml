@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "Address";
+}
+
+<h1>Address</h1>
+
+<select id="selectCity"></select>
+<select id="selectDistrict"></select>
+<select id="selectRoad"></select>
+@section Scripts{ 
+    <script>
+    const selCity = document.querySelector("#selectCity");
+    const selDistrinct = document.querySelector("#selectDistrinct")
+    const selRoad = document.querySelector("#selectRoad");
+    //===============載入城市=====================
+    //step1
+    const xhr = new XMLHttpRequest;
+    //step3
+    selCity.addEventListener("change", () => {
+        console.log(selCity.options[selCity.selectedIndex].value);
+    })
+    xhr.addEventListener("load", () => {
+        const datas = JSON.parse(xhr.responseText);
+        datas.forEach((city) => {
+            const opt = new Option(city, city);
+            selCity.options.add(opt);
+        })
+    })
+    //step2
+    xhr.open("Get", "@Url.Content("~/api/city")");
+    xhr.send();
+    //===============載入城市結束=====================
+
+    //===============載入行政區=====================
+    //step1
+    const xhr1 = new XMLHttpRequest;
+        //step3
+        selDistrinct.addEventListener("change", () => {
+            console.log(selDistrinct.options[selDistrinct.selectedIndex].value);
+    })
+    xhr1.addEventListener("load", () => {
+        const datas1 = JSON.parse(xhr1.responseText);
+        datas.forEach((distrincts) => {
+            const opt1 = new Option(distrincts, distrincts);
+            selCity.options.add(opt1);
+        })
+    })
+    //step2
+    xhr1.open("Get", "@Url.Content("~/api/distrincts")");
+    xhr1.send();
+
+    //===============載入行政區結束=====================
+    //===============載入路名=====================
+    //step1
+    const xhr2 = new XMLHttpRequest;
+        //step3
+        selRoad.addEventListener("change", () => {
+            console.log(selRoad.options[selRoad.selectedIndex].value);
+    })
+    xhr2.addEventListener("load", () => {
+        const datas2 = JSON.parse(xhr1.responseText);
+        datas.forEach((roads) => {
+            const opt2 = new Option(roads, roads);
+            selCity.options.add(opt2);
+        })
+    })
+    //step2
+    xhr2.open("Get", "@Url.Content("~/api/roads")");
+    xhr2.send();
+
+    //===============載入路名結束=====================
+
+
+
+
+    </script>
+
+}
